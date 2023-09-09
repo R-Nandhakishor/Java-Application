@@ -96,6 +96,7 @@ pipeline{
 					echo '-------------Docker Publish ends-----------------'
 				}
 			}
-		}	
+		}
+	}		
 }
 	
