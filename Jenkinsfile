@@ -1,4 +1,6 @@
 def registry = "https://nandhakishor.jfrog.io/"
+def imageName = 'nandhakishor.jfrog.io/kishor-docker-local/app'
+def version = '2.1.2'
 pipeline{
 	agent{
 		node{
@@ -74,6 +76,26 @@ pipeline{
         }   
     }
 
-	}	
+        stage ("Docker Build"){
+			steps {
+				script {
+					echo '-------------Starting Docker Build-------------'
+					app = docker.build(imageName+":"+version)
+					echo '-------------Docker Build ends-----------------'
+				}
+			}
+		}	
+
+		stage ("Docker Publish"){
+			steps {
+				script {
+					echo '-------------Starting Docker Publish-------------'
+					 docker.withRegistry(registry, 'JFrog-Cred'){
+						app.push()
+					 }
+					echo '-------------Docker Publish ends-----------------'
+				}
+			}
+		}	
 }
 	
