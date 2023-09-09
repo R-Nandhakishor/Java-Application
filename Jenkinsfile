@@ -11,10 +11,19 @@ pipeline{
 
 		stage ('build'){
 			steps{
-			  sh 'mvn clean deploy'
+			  echo "------------build stareted--------"	
+			  sh 'mvn clean deploy -Dmaven.test.skip=true'
+			  echo "------------build completed--------"	
 			}
 		}
-		
+
+		stage ('test'){
+			steps{
+			  echo "------------unit test stareted--------"	
+			  sh 'mvn surefire-report:report'
+			  echo "------------unit test completed--------"	
+			}
+		}
 		stage ('SonarQube analysis'){
 			environment {
 				scannerHome= tool 'kishor-sonar-scanner'
